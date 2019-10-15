@@ -23,5 +23,6 @@ Route::post('/password/email','Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::post('/password/reset','Auth\ForgotPasswordController@resetPassword');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('user_details','ApiAuthController@getUser');
+    Route::post('validate_account','ApiAuthController@verifieAccount');
 });
 

@@ -6,13 +6,19 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ApiAuthController extends Controller
 {
+    public $user;
+    public $token;
     public function register(Request $request){
         $validatedData = Validator::make($request->all(), [
-            'name'=> 'required|max:55',
+            'first_name'=> 'required|max:55',
+            'last_name'=> 'required|max:55',
+            'phone'=> 'required|numeric',
+            'date_naissance'=> 'required|date_format:d/m/Y',
             'email'=>'email|required|unique:users',
             'password'=>'required|confirmed|min:6'
         ]);
@@ -21,9 +27,16 @@ class ApiAuthController extends Controller
         }
         $input = $request->all();
         $input['password'] = bcrypt($request->password);
+        $input['passwordtoken'] = mt_rand(0, 9).mt_rand(0, 9).mt_rand(0, 9).mt_rand(0, 9);
+        $this->token = $input['passwordtoken'];
         $user = User::create($input);
+        $this->user = $user;
         $accessToken = $user->createToken('authToken')->accessToken;
-
+        Mail::send([], [], function ($message) {
+            $message->to($this->user->email)
+                ->subject('Email verification')
+                ->setBody('Veuillez verifier votre compte avec ce code :'.$this->token); // assuming text/plain
+        });
         return response()->json(['user'=>$user, 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
     }
 
@@ -42,5 +55,20 @@ class ApiAuthController extends Controller
     public function getUser(){
         $user = Auth::user();
         return response()->json(['success' => $user, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
+    }
+
+    public function verifieAccount(Request $request){
+        $input = $request->all();
+        $user = Auth::user();
+        if($user == null || $user->passwordtoken == ''){
+            return response()->json(['message'=>'user not found'],404);
+        }
+        if($user->passwordtoken == $input['code']){
+            $user->passwordtoken = '';
+            $user->verified = true;
+            $user->save();
+            return response()->json(['message'=>'Votre compte a eté valider avec success'],200);
+        }
+        return response()->json(['message'=>'account does not existe'],401);
     }
 }

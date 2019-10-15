@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','passwordtoken'
+        'first_name','last_name', 'email', 'password','passwordtoken','verified','phone','date_naissance','address','ville','code_postal','nombre_signalisation','image_id'
     ];
 
     /**
@@ -39,4 +39,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getFullNameAttribute() {
+        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
+    }
+
+    public function image()
+    {
+        return $this->hasOne('App\model\Image');
+    }
 }

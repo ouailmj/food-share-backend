@@ -22,6 +22,7 @@ class ForgotPasswordController extends Controller
     */
     use SendsPasswordResetEmails;
     public $token;
+    public $currentUser;
     public function sendResetLinkEmail(Request $request)
     {
         $input= $request->all();
@@ -32,8 +33,9 @@ class ForgotPasswordController extends Controller
         $this->token = 'APP-'.rand(1, 100000);
         $user->passwordtoken = $this->token;
         $user->save();
+        $this->currentUser = $user;
         Mail::send([], [], function ($message) {
-            $message->to('ouailmjahedooo@gmail.com')
+            $message->to($this->currentUser->email)
             ->subject('Reset password')
             ->setBody('Hey, ure new password is '.$this->token); // assuming text/plain
         });
