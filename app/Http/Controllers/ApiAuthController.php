@@ -18,7 +18,7 @@ class ApiAuthController extends Controller
             'first_name'=> 'required|max:55',
             'last_name'=> 'required|max:55',
             'phone'=> 'required|numeric',
-            'date_naissance'=> 'required|date_format:d/m/Y',
+            'date_naissance'=> 'required|date_format:Y-m-d',
             'email'=>'email|required|unique:users',
             'password'=>'required|confirmed|min:6'
         ]);

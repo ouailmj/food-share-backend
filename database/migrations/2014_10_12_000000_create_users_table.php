@@ -23,12 +23,12 @@ class CreateUsersTable extends Migration
             $table->boolean('verified')->default(false);
             $table->string('phone');
             $table->date('date_naissance');
-            $table->boolean('sexe');
-            $table->string('address');
-            $table->string('ville');
-            $table->string('code_postal');
-            $table->string('localization');
-            $table->integer('nombre signalisation');
+            $table->boolean('sexe')->nullable(true);
+            $table->string('address')->nullable(true);
+            $table->string('ville')->nullable(true);
+            $table->string('code_postal')->nullable(true);
+            $table->string('localization')->nullable(true);
+            $table->integer('nombre signalisation')->nullable(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->bigInteger('image_id')->nullable();
             $table->rememberToken();
