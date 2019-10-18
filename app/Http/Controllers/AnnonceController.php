@@ -53,8 +53,15 @@ class AnnonceController extends Controller
         $user = $annonce->user()->get();
         $categorie = $annonce->categorie()->get();
         $currentUser = auth()->user();
+        $comments = \DB::table('commentaires')
+            ->where('commentaires.annonce_id', $annonce->id)
+            ->leftjoin('users', 'commentaires.user_id', '=', 'users.id')
+            ->leftjoin('images', 'users.id', '=', 'images.user_id')
+            ->select('images.url','users.*','commentaires.*')
+            ->orderBy('commentaires.created_at', 'ASC')
+            ->get();
         return response()->json(['annonce' => $annonce , 'images' => $pictures ,
-            'user' => $user , 'categorie' => $categorie , 'currentUser' => $currentUser],200);
+            'user' => $user , 'categorie' => $categorie , 'currentUser' => $currentUser, 'commentaires' => $comments],200);
     }
 
     public function update(Request $request)

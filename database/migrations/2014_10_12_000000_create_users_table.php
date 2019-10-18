@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('passwordtoken')->nullable();
             $table->boolean('verified')->default(false);
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->date('date_naissance');
             $table->boolean('sexe')->nullable(true);
             $table->string('address')->nullable(true);

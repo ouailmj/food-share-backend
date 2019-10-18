@@ -28,5 +28,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('annonces','AnnonceController@store');
     Route::get('annonces/{id}','AnnonceController@show');
     Route::post('annonce/update','AnnonceController@update');
+    Route::get('comments/{id}','CommentaireController@get');
+    Route::post('comments','CommentaireController@insert');
+    Route::post('comments/update','CommentaireController@update');
+    Route::get('comments/delete/{id}','CommentaireController@delete');
 });
 

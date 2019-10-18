@@ -53,13 +53,14 @@ class ApiAuthController extends Controller
     }
 
     public function getUser(){
-        $user = Auth::user();
-        return response()->json(['success' => $user, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
+        $user = auth()->user();
+        $image_profile = $user->image();
+        return response()->json(['success' => $user,'image_profile'=>$image_profile->get()],200);
     }
 
     public function verifieAccount(Request $request){
         $input = $request->all();
-        $user = Auth::user();
+        $user = auth()->user();
         if($user == null || $user->passwordtoken == ''){
             return response()->json(['message'=>'user not found'],404);
         }
