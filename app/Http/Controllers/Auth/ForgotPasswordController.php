@@ -26,21 +26,32 @@ class ForgotPasswordController extends Controller
     public function sendResetLinkEmail(Request $request)
     {
         $input= $request->all();
-        $user = User::where('email',$input['email'])->firstOrFail();
+        $user = User::where('email',$input['email_phone'])->orWhere('phone',$input['email_phone'])->first();
         if($user == null){
             return response()->json(['message'=>'user not found'],404);
         }
+
         $this->token = 'APP-'.rand(1, 100000);
         $user->passwordtoken = $this->token;
         $user->save();
         $this->currentUser = $user;
-        Mail::send([], [], function ($message) {
-            $message->to($this->currentUser->email)
-            ->subject('Reset password')
-            ->setBody('Hey, ure new password is '.$this->token); // assuming text/plain
-        });
 
-        return response()->json(['message'=>'email sent successfully'],200);
+        if($user->email==$input['email_phone']){
+            Mail::send([], [], function ($message) {
+                $message->to($this->currentUser->email)
+                    ->subject('Validation phone')
+                    ->setBody('Hey, ure code is '.$this->token); // assuming text/plain
+            });
+            return response()->json(['message'=>'email sent successfully'],200);
+        }else{
+            $nexmo = app('Nexmo\Client');
+            $nexmo->message()->send([
+                'to'=>'+212 677 026793',
+                'from'=>'+212642215381',
+                'text'=> 'Hey ure code is :'.$this->token
+            ]);
+            return response()->json(['message'=>'sms sent successfully'],200);
+        }
     }
 
     public function resetPassword(Request $request){

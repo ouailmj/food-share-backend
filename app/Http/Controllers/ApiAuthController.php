@@ -32,11 +32,20 @@ class ApiAuthController extends Controller
         $user = User::create($input);
         $this->user = $user;
         $accessToken = $user->createToken('authToken')->accessToken;
-        Mail::send([], [], function ($message) {
-            $message->to($this->user->email)
-                ->subject('Email verification')
-                ->setBody('Veuillez verifier votre compte avec ce code :'.$this->token); // assuming text/plain
-        });
+        if($input['emailVerification']){
+            Mail::send([], [], function ($message) {
+                $message->to($this->user->email)
+                    ->subject('Email verification')
+                    ->setBody('Veuillez verifier votre compte avec ce code :'.$this->token); // assuming text/plain
+            });
+        }else{
+            $nexmo = app('Nexmo\Client');
+            $nexmo->message()->send([
+                'to'=>'+212'.(int) $input['phone'],
+                'from'=>'+212642215381',
+                'text'=> 'Veuillez verifier votre compte avec ce code :'.$this->token
+            ]);
+        }
         return response()->json(['user'=>$user, 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
     }
 
