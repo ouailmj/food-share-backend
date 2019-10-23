@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentSubmitted;
 use App\model\Annonce;
 use App\model\Commentaire;
+use App\model\Notification;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -26,6 +28,15 @@ class CommentaireController extends Controller
         $comment->annonce_id = $request->id;
         $comment->message = $request->message;
         $comment->save();
+        $notif = new Notification();
+        $annonce = Annonce::findOrFail($request->id);
+        $notif->user_from = $request->user_id;
+        $notif->user_to = $annonce->user_id;
+        $notif->objet = 'commentaire';
+        $notif->message = 'Un utilisateur a commenter votre poste';
+        $notif->annonce_id = $annonce->id;
+        $notif->save();
+        event(new CommentSubmitted($notif->user_from,$notif->user_to,$notif->annonce_id,'commentaire'));
         return response()->json(['message' => 'commentaire inserer avec succes'],200);
     }
     public function update(Request $request){

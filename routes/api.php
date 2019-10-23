@@ -32,5 +32,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('comments','CommentaireController@insert');
     Route::post('comments/update','CommentaireController@update');
     Route::get('comments/delete/{id}','CommentaireController@delete');
+    Route::get('historique/{id}','HistoriqueController@getDonnation');
+    Route::post('message','MessageController@submit');
+    Route::get('messages','MessageController@getChat');
+    Route::get('messages/{id}','MessageController@getMessage');
+    Route::post('search','SearshController@search');
+    Route::get('motifs','SignalisationController@getMotif');
+    Route::post('signalisation','SignalisationController@signaliserUtilisateur');
+    Route::get('notifications','NotificationController@getNotification');
 });
 

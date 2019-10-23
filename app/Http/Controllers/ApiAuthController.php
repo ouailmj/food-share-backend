@@ -57,6 +57,9 @@ class ApiAuthController extends Controller
         if(!auth()->attempt($validatedData)){
             return response()->json(['error'=>'Invalid credentials'],401);
         }
+        if(auth()->user()->nombre_signalisation > 3){
+            return response()->json(['error'=>'Votre compte a été bloqué'],401);
+        }
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
         return response()->json(['user'=>auth()->user(), 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
     }

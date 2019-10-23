@@ -20,7 +20,7 @@ class AnnonceController extends Controller
             ->select('annonces.*','images.url','categories.name')
             ->groupBy('annonces.id')
             ->orderBy('annonces.created_at', 'DESC')
-            ->get();
+            ->paginate(10);
         return (response()->json($annonces));
     }
 
