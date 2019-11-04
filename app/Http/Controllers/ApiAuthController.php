@@ -61,7 +61,9 @@ class ApiAuthController extends Controller
             return response()->json(['error'=>'Votre compte a été bloqué'],401);
         }
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
-        return response()->json(['user'=>auth()->user(), 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
+        $user = auth()->user();
+        $image = $user->image();
+        return response()->json(['user'=>auth()->user(),'image' => $image, 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
     }
 
     public function getUser(){
