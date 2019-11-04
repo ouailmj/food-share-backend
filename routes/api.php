@@ -22,7 +22,7 @@ Route::post('/login','ApiAuthController@login');
 Route::post('/password/email','Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/password/reset','Auth\ForgotPasswordController@resetPassword');
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('user_details','ApiAuthController@getUser');
+    Route::get('user_details','ApiAuthController@getUser');
     Route::post('validate_account','ApiAuthController@verifieAccount');
     Route::get('annonces','AnnonceController@index');
     Route::post('annonces','AnnonceController@store');
@@ -40,5 +40,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('motifs','SignalisationController@getMotif');
     Route::post('signalisation','SignalisationController@signaliserUtilisateur');
     Route::get('notifications','NotificationController@getNotification');
+    Route::post('desactivate','ApiAuthController@desactivateAcc');
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\model\Image;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -57,12 +58,12 @@ class ApiAuthController extends Controller
         if(!auth()->attempt($validatedData)){
             return response()->json(['error'=>'Invalid credentials'],401);
         }
-        if(auth()->user()->nombre_signalisation > 3){
+        if(auth()->user()->nombre_signalisation > 3 || !auth()->user()->verified){
             return response()->json(['error'=>'Votre compte a été bloqué'],401);
         }
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
         $user = auth()->user();
-        $image = $user->image();
+        $image = Image::where('id',$user->image_id)->get();
         return response()->json(['user'=>auth()->user(),'image' => $image, 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
     }
 
@@ -85,5 +86,16 @@ class ApiAuthController extends Controller
             return response()->json(['message'=>'Votre compte a eté valider avec success'],200);
         }
         return response()->json(['message'=>'account does not existe'],401);
+    }
+
+    public function desactivateAcc(Request $request){
+        $input = $request->all();
+        $user = auth()->user();
+        if($user->email == $input['email']){
+            $user->update([
+                'verified' => 0
+            ]);
+            return response()->json(['message'=>'desactivé'],200);
+        }
     }
 }
