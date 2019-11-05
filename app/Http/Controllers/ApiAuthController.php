@@ -33,7 +33,7 @@ class ApiAuthController extends Controller
         $user = User::create($input);
         $this->user = $user;
         $accessToken = $user->createToken('authToken')->accessToken;
-        if($input['emailVerification']){
+        if(0){
             Mail::send([], [], function ($message) {
                 $message->to($this->user->email)
                     ->subject('Email verification')
