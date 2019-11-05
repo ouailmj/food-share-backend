@@ -21,6 +21,7 @@ Route::post('/register','ApiAuthController@register');
 Route::post('/login','ApiAuthController@login');
 Route::post('/password/email','Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/password/reset','Auth\ForgotPasswordController@resetPassword');
+Route::post('/login_google','Auth\ForgotPasswordController@logingoogle');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user_details','ApiAuthController@getUser');
     Route::post('validate_account','ApiAuthController@verifieAccount');

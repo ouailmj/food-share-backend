@@ -46,7 +46,7 @@ class ForgotPasswordController extends Controller
         }else{
             $nexmo = app('Nexmo\Client');
             $nexmo->message()->send([
-                'to'=>'+212 677 026793',
+                'to'=>'+212'.$input['email_phone'],
                 'from'=>'+212642215381',
                 'text'=> 'Hey ure code is :'.$this->token
             ]);
