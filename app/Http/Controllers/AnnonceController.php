@@ -38,12 +38,14 @@ class AnnonceController extends Controller
             'categorie_id' => $categorie->id,
             'date_expiration' => $request->date_expiration
         ]);
-        Image::create([
-            'url' => $request->url,
-            'annonce_id' => $annonce->id,
-            'className'=> 'annonce'
-        ]);
-        return response()->json(['message'=>'annonce created successfully'],200);
+        foreach ($request->url as $u) {
+            $pic = new Image();
+            $pic->url = $u;
+            $pic->annonce_id = $annonce->id;
+            $pic->className = 'annonce';
+            $pic->save();
+        }
+        return response()->json(['message'=>'annonce created successfully']);
     }
 
     public function show($id)
