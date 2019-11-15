@@ -15,7 +15,7 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('url');
+            $table->string('url')->nullable();
             //foreign
             $table->integer('annonce_id')->unsigned()->nullable();
             $table->integer('user_id')->unsigned()->nullable();

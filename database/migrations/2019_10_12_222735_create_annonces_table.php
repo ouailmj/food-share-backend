@@ -21,7 +21,7 @@ class CreateAnnoncesTable extends Migration
             $table->boolean('produit_avec_date_expiration')->default(true);
             $table->bigInteger('user_id');
             $table->bigInteger('categorie_id');
-            $table->date('date_expiration');
+            $table->date('date_expiration')->nullable();
             $table->timestamps();
         });
     }
