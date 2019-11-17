@@ -4,7 +4,7 @@
     <list default="true" id="e42df9a2-370b-4e43-b58c-3c96202cc36c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AnnonceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AnnonceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiAuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiAuthController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -223,6 +223,8 @@
       <workItem from="1572946548708" duration="6861000" />
       <workItem from="1573035473731" duration="5441000" />
       <workItem from="1573121009773" duration="568000" />
+      <workItem from="1573904356362" duration="3070000" />
+      <workItem from="1573986716532" duration="2370000" />
     </task>
     <servers />
   </component>

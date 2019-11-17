@@ -98,4 +98,39 @@ class ApiAuthController extends Controller
             return response()->json(['message'=>'desactivé'],200);
         }
     }
+
+
+    public function updateUserDetails(Request $request){
+            $validatedData = Validator::make($request->all(), [
+                'first_name'=> 'required|max:55',
+                'last_name'=> 'required|max:55',
+                'date_naissance'=> 'required|date_format:Y-m-d',
+                'email'=>'email|required|unique:users',
+
+            ]);
+            if($validatedData->fails()){
+                return response()->json(['error'=>$validatedData->errors()],401);
+            }
+            $input = $request->all();
+
+            $user = User::create($input);
+            $this->user = $user;
+            $accessToken = $user->createToken('authToken')->accessToken;
+            if(0){
+                Mail::send([], [], function ($message) {
+                    $message->to($this->user->email)
+                        ->subject('Email verification')
+                        ->setBody('Veuillez verifier votre compte avec ce code :'.$this->token); // assuming text/plain
+                });
+            }else{
+                $nexmo = app('Nexmo\Client');
+                $nexmo->message()->send([
+                    'to'=>'+212'.(int) $input['phone'],
+                    'from'=>'+212642215381',
+                    'text'=> 'Veuillez verifier votre compte avec ce code :'.$this->token
+                ]);
+            }
+            return response()->json(['user'=>$user, 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
+        }
+
 }
