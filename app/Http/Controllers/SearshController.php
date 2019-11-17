@@ -27,7 +27,7 @@ class SearshController extends Controller
                 $formatted_date = $date->format('Y-m-d H:i:s');
             }
             if($idCat==0){
-                $q->where('annonces.created_at','>',$formatted_date)->where('title','like','%'.$query.'%')->orWhere('description','like','%'.$query.'%');
+                $q->where('annonces.created_at','>',$formatted_date)->orwhere('title','like','%'.$query.'%')->orWhere('description','like','%'.$query.'%');
             }else{
                 $q->where('annonces.created_at','>',$formatted_date)->where('categorie_id',$idCat)->where('title','like','%'.$query.'%')->orWhere('description','like','%'.$query.'%');
             }
