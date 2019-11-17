@@ -13,6 +13,7 @@ class AnnonceController extends Controller
     public function index()
     {
         $annonces = \DB::table('annonces')
+            ->where('status',1)
             ->leftJoin('images', function ($join){
                 $join->on('annonces.id', '=', 'images.annonce_id');
             })
@@ -38,12 +39,14 @@ class AnnonceController extends Controller
             'categorie_id' => $categorie->id,
             'date_expiration' => $request->date_expiration
         ]);
-        Image::create([
-            'url' => $request->url,
-            'annonce_id' => $annonce->id,
-            'className'=> 'annonce'
-        ]);
-        return response()->json(['message'=>'annonce created successfully'],200);
+        foreach ($request->url as $u) {
+            $pic = new Image();
+            $pic->url = $u;
+            $pic->annonce_id = $annonce->id;
+            $pic->className = 'annonce';
+            $pic->save();
+        }
+        return response()->json(['message'=>'annonce created successfully']);
     }
 
     public function show($id)
@@ -92,6 +95,19 @@ class AnnonceController extends Controller
             return response()->json(['message'=>'annonce updated successfully'],200);
         }
         return response()->json(['error'=>'Erreur lors du update'],419);
+    }
+
+    public function cloturer($id){
+        $user = auth()->user();
+        $annonce = Annonce::where('id',$id)->get();
+        if($annonce[0]->user_id==$user->id){
+            $annonce[0]->update([
+                'status' => 0
+            ]);
+            return response()->json(['message'=>'annonce updated successfully'],200);
+        }else{
+            return response()->json(['message'=>'Unprocessable entity'],419);
+        }
     }
 
     protected function validator(array $data)
