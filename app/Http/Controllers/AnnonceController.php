@@ -73,7 +73,6 @@ class AnnonceController extends Controller
         $categorie = Categorie::where(['name'=>$request->name])->firstOrFail();
         $user = auth()->user();
         $annonce = Annonce::find($request->id);
-        if($user->id == $annonce->user_id){
             $annonce->update([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -87,14 +86,14 @@ class AnnonceController extends Controller
                     Image::destroy($value->id);
                 }
             }
-            Image::create([
-                'url' => $request->url,
-                'annonce_id' => $annonce->id,
-                'className'=> 'annonce'
-            ]);
+            foreach ($request->url as $u) {
+                $pic = new Image();
+                $pic->url = $u;
+                $pic->annonce_id = $annonce->id;
+                $pic->className = 'annonce';
+                $pic->save();
+            }
             return response()->json(['message'=>'annonce updated successfully'],200);
-        }
-        return response()->json(['error'=>'Erreur lors du update'],419);
     }
 
     public function cloturer($id){

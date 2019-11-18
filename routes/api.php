@@ -26,6 +26,7 @@ Route::get('user/{id}','MessageController@getUser');
 Route::group(['middleware' => ['auth:api','cors']], function () {
     Route::get('user_details','ApiAuthController@getUser');
     Route::post('validate_account','ApiAuthController@verifieAccount');
+    Route::post('update_photo','ApiAuthController@update_profile_photo');
     Route::get('annonces','AnnonceController@index');
     Route::post('annonces','AnnonceController@store');
     Route::get('cloturer/{id}','AnnonceController@cloturer');

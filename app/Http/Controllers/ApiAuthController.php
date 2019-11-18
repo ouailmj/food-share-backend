@@ -67,10 +67,31 @@ class ApiAuthController extends Controller
         return response()->json(['user'=>auth()->user(),'image' => $image, 'access_token'=>$accessToken, 'expires_in'=> strtotime('+30 day', Carbon::now()->timestamp)],200);
     }
 
+
     public function getUser(){
         $user = auth()->user();
         $image_profile = $user->image();
         return response()->json(['success' => $user,'image_profile'=>$image_profile->get()],200);
+    }
+
+    public function update_profile_photo(Request $request){
+        $user = auth()->user();
+        $oldImages = Image::where(['user_id'=>$user->id])->get();
+        if($oldImages){
+            foreach ($oldImages as $value) {
+                Image::destroy($value->id);
+            }
+        }
+        if ($request->img!=null){
+            $pic = new Image();
+            $pic->url = $request->img;
+            $pic->user_id = $user->id;
+            $pic->save();
+            $user->update([
+                'image_id'=>$pic->id
+            ]);
+        }
+        return response()->json(['message'=>'Image updated successfully'],200);
     }
 
     public function verifieAccount(Request $request){
