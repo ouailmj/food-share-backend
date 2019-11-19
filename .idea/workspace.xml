@@ -4,6 +4,7 @@
     <list default="true" id="e42df9a2-370b-4e43-b58c-3c96202cc36c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HistoriqueController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HistoriqueController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -217,7 +218,7 @@
       <workItem from="1573986716532" duration="2370000" />
       <workItem from="1574018553383" duration="4907000" />
       <workItem from="1574175863407" duration="46000" />
-      <workItem from="1574175916931" duration="2585000" />
+      <workItem from="1574175916931" duration="4310000" />
     </task>
     <servers />
   </component>
