@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth:api','cors']], function () {
     Route::post('comments','CommentaireController@insert');
     Route::post('comments/update','CommentaireController@update');
     Route::get('comments/delete/{id}','CommentaireController@delete');
-    Route::get('historique/{id}','HistoriqueController@getDonnation');
+    Route::get('historique','HistoriqueController@getDonnation');
     Route::post('message','MessageController@submit');
     Route::get('messages','MessageController@getChat');
     Route::get('messages/{id}','MessageController@getMessage');

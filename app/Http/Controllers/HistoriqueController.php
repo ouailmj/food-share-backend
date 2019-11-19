@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 class HistoriqueController extends Controller
 {
     public function getDonnation($id){
+        $user = auth()->user();
         $clotured = Annonce::all()
             ->where('status',0)
-            ->where('user_id',$id);
+            ->where('user_id',$user->id);
         $non_clotured = Annonce::all()
             ->where('status',1)
-            ->where('user_id',$id);
+            ->where('user_id',$user->id);
         return response()->json(['clotured'=>$clotured,'non_clotured'=>$non_clotured],200);
     }
 }
