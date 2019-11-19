@@ -11,10 +11,10 @@ class HistoriqueController extends Controller
         $user = auth()->user();
         $clotured = Annonce::all()
             ->where('status',0)
-            ->where('user_id',$user->id);
+            ->where('user_id',$user->id)->get();
         $non_clotured = Annonce::all()
             ->where('status',1)
-            ->where('user_id',$user->id);
+            ->where('user_id',$user->id)->get();
         return response()->json(['clotured'=>$clotured,'non_clotured'=>$non_clotured],200);
     }
 }
