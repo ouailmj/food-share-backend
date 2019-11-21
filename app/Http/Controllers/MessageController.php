@@ -61,7 +61,7 @@ class MessageController extends Controller
     }
 
     public function getUser($id){
-        $userMes = User::findOrFail($id)->get();
+        $userMes = User::where('id',$id)->get();
         $image = Image::where('id',$userMes[0]->image_id)->get();
         return response()->json(['user'=>$userMes,'image'=>$image],200);
     }
